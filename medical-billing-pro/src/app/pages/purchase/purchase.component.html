@@ -1,0 +1,135 @@
+<div class="purchase-details">
+  <!-- Page Title -->
+  <h2>Purchase Details</h2>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <!-- Search input -->
+    <input 
+      type="text" 
+      placeholder="Search purchases..." 
+      class="search-box"
+      [(ngModel)]="searchTerm"
+      (input)="filterPurchases()" />
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <!-- Optional: Replace with actual logic -->
+      <button mat-icon-button aria-label="View">
+        <mat-icon>visibility</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Edit">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Delete" (click)="sendSelected()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+
+    <!-- Add Purchase -->
+    <button mat-raised-button color="primary" (click)="openAddPurchaseDialog()">+ Add Purchase</button>
+  </div>
+
+  <!-- Purchase Table -->
+  <div class="table-wrapper">
+    <table class="purchase-table">
+      <thead>
+        <tr>
+          <th>
+            <input type="checkbox" (change)="toggleSelectAll($event)" />
+          </th>
+          <th>#</th>
+          <th>Purchase ID</th>
+          <th>Supplier</th>
+          <th>Supplier Address</th>
+          <th>Mobile Number</th>
+          <th>Date</th>
+          <th>MRP</th>
+          <th>Selling Price</th>
+          <th>Total Amount</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let purchase of purchases; let i = index">
+          <tr>
+            <td>
+              <input 
+                type="checkbox" 
+                [checked]="selectedIds.includes(purchase.purchaseId)" 
+                (change)="toggleSelection(purchase.purchaseId, $event)" />
+            </td>
+            <td>{{ i + 1 }}</td>
+            <td>{{ purchase.purchaseId }}</td>
+            <td>{{ purchase.supplierName }}</td>
+            <td>{{ purchase.supplierAddress }}</td>
+            <td>{{ purchase.mobileNumber }}</td>
+            <td>{{ purchase.date | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ purchase.mrp }}</td>
+            <td>{{ purchase.sellingPrice }}</td>
+            <td>{{ purchase.totalAmount }}</td>
+            <td>
+              <span class="status"
+                [ngClass]="{
+                  'completed': purchase.status === 'Completed',
+                  'pending': purchase.status === 'Pending'
+                }">
+                {{ purchase.status }}
+              </span>
+            </td>
+            <td>
+            <button mat-icon-button color="accent" (click)="toggleExpand(i)">
+            <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="downloadPDF(purchase)">
+            <mat-icon>download</mat-icon>
+            </button>
+            </td>
+          </tr>
+
+          <!-- Expanded Row -->
+          <tr *ngIf="expandedIndex === i">
+            <td colspan="12">
+              <div class="expanded-details">
+                <!-- Purchase Info -->
+                <h4>Purchase Details</h4>
+                <p><b>Purchase ID:</b> {{ purchase.purchaseId }}</p>
+                <p><b>Supplier Name:</b> {{ purchase.supplierName }}</p>
+                <p><b>Supplier Address:</b> {{ purchase.supplierAddress }}</p>
+                <p><b>Mobile Number:</b> {{ purchase.mobileNumber }}</p>
+                <p><b>Date:</b> {{ purchase.date | date: 'yyyy-MM-dd' }}</p>
+                <p><b>MRP:</b> {{ purchase.mrp }}</p>
+                <p><b>Selling Price:</b> {{ purchase.sellingPrice }}</p>
+                <p><b>Total Amount:</b> {{ purchase.totalAmount }}</p>
+                <p><b>Status:</b> {{ purchase.status }}</p>
+
+                <!-- Product Info -->
+                <h4>Product Details</h4>
+                <table class="product-details-table" *ngIf="purchase.products?.length">
+                  <thead>
+                    <tr>
+                      <th>Product Name</th>
+                      <th>Quantity</th>
+                      <th>Unit Price</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let product of purchase.products">
+                      <td>{{ product.productName }}</td>
+                      <td>{{ product.quantity }}</td>
+                      <td>{{ product.costPrice }}</td>
+                      <td>{{ product.quantity * product.costPrice }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p *ngIf="!purchase.products?.length">No products available.</p>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
