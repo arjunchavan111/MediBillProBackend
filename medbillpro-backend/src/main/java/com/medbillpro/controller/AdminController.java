@@ -3,7 +3,6 @@ package com.medbillpro.controller;
 import com.medbillpro.apiResponse.ApiResponse;
 import com.medbillpro.constants.URLMapping;
 import com.medbillpro.dto.AdminRequest;
-import com.medbillpro.dto.LoginRequest;
 import com.medbillpro.entity.Admin;
 import com.medbillpro.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class AdminController {
     }
 
     @PostMapping(URLMapping.ADMIN_LOGIN)
-    public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity login(@RequestBody AdminRequest loginRequest) {
 
         ApiResponse apiResponse =new ApiResponse<>();
         if ("admin".equals(loginRequest.getUsername()) && "admin".equals(loginRequest.getPassword())) {
