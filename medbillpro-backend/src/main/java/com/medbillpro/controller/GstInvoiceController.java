@@ -22,35 +22,135 @@ public class GstInvoiceController {
 
 
     @PostMapping("/create")
-    public ResponseEntity createInvoice(@RequestBody GstInvoice gstRequest) {
+    public ResponseEntity<ApiResponse> createInvoice(@RequestBody GstInvoice gstRequest) {
         ApiResponse apiResponse = new ApiResponse();
-        GstInvoice Response = gstInvoiceService.saveInvoice(gstRequest);
-        return ResponseEntity.ok(Response);
+
+        try {
+            GstInvoice response = gstInvoiceService.saveInvoice(gstRequest);
+
+            if (response != null) {
+                apiResponse.setMessage("Invoice saved successfully");
+                apiResponse.setStatus(1);
+                apiResponse.setData(response);
+                return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+            } else {
+                apiResponse.setErrorMessage("Invoice not saved");
+                apiResponse.setStatus(0);
+                apiResponse.setData(null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+            }
+
+        } catch (Exception e) {
+            apiResponse.setErrorMessage("Error saving invoice: " + e.getMessage());
+            apiResponse.setStatus(0);
+            apiResponse.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getInvoiceById(@PathVariable Long id) {
-        GstInvoice invoice = gstInvoiceService.getInvoiceById(id);
-        return ResponseEntity.ok(invoice);
+    public ResponseEntity<ApiResponse> getInvoiceById(@PathVariable Long id) {
+        ApiResponse apiResponse = new ApiResponse();
+        try {
+            GstInvoice invoice = gstInvoiceService.getInvoiceById(id);
+
+            if (invoice != null) {
+                apiResponse.setMessage("Invoice fetched successfully");
+                apiResponse.setStatus(1);
+                apiResponse.setData(invoice);
+                return ResponseEntity.ok(apiResponse);
+            } else {
+                apiResponse.setErrorMessage("Invoice not found with ID: " + id);
+                apiResponse.setStatus(0);
+                apiResponse.setData(null);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
+            }
+        } catch (Exception e) {
+            apiResponse.setErrorMessage("Error fetching invoice: " + e.getMessage());
+            apiResponse.setStatus(0);
+            apiResponse.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+        }
     }
+
 
     @GetMapping("/all")
-    public ResponseEntity getAllInvoices() {
-        List<GstInvoice> invoices = gstInvoiceService.getAllInvoices();
-        return ResponseEntity.ok(invoices);
+    public ResponseEntity<ApiResponse> getAllInvoices() {
+        ApiResponse apiResponse = new ApiResponse();
+        try {
+            List<GstInvoice> invoices = gstInvoiceService.getAllInvoices();
+
+            if (invoices != null && !invoices.isEmpty()) {
+                apiResponse.setMessage("Invoices fetched successfully");
+                apiResponse.setStatus(1);
+                apiResponse.setData(invoices);
+                return ResponseEntity.ok(apiResponse);
+            } else {
+                apiResponse.setErrorMessage("No invoices found");
+                apiResponse.setStatus(0);
+                apiResponse.setData(null);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
+            }
+        } catch (Exception e) {
+            apiResponse.setErrorMessage("Error while fetching invoices: " + e.getMessage());
+            apiResponse.setStatus(0);
+            apiResponse.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+        }
     }
 
+
     @PutMapping("/update/{id}")
-    public ResponseEntity updateInvoice(@PathVariable Long id, @RequestBody GstInvoice UpdateReq) {
-        ApiResponse   apiResponse = new ApiResponse();
-       //GstInvoice updated = gstInvoiceService.updateInvoice(id, gstInvoice);
-       // return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    public ResponseEntity<ApiResponse> updateInvoice(@PathVariable Long id, @RequestBody GstInvoice updateReq) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        try {
+            GstInvoice updated = gstInvoiceService.updateInvoice(id, updateReq);
+
+            if (updated != null) {
+                apiResponse.setMessage("Invoice updated successfully");
+                apiResponse.setStatus(1);
+                apiResponse.setData(updated);
+                return ResponseEntity.ok(apiResponse);
+            } else {
+                apiResponse.setErrorMessage("Invoice not found with ID: " + id);
+                apiResponse.setStatus(0);
+                apiResponse.setData(null);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
+            }
+
+        } catch (Exception e) {
+            apiResponse.setErrorMessage("Error updating invoice: " + e.getMessage());
+            apiResponse.setStatus(0);
+            apiResponse.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteInvoice(@PathVariable Long id) {
-        gstInvoiceService.deleteInvoice(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ApiResponse> deleteInvoice(@PathVariable Long id) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        try {
+            boolean deleted = gstInvoiceService.deleteInvoice(id); // Assuming this returns a boolean
+
+            if (deleted) {
+                apiResponse.setMessage("Invoice deleted successfully");
+                apiResponse.setStatus(1);
+                apiResponse.setData(null);
+                return ResponseEntity.ok(apiResponse);
+            } else {
+                apiResponse.setErrorMessage("Invoice not found with ID: " + id);
+                apiResponse.setStatus(0);
+                apiResponse.setData(null);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
+            }
+
+        } catch (Exception e) {
+            apiResponse.setErrorMessage("Error deleting invoice: " + e.getMessage());
+            apiResponse.setStatus(0);
+            apiResponse.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+        }
     }
 }

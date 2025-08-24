@@ -19,5 +19,5 @@ public interface GstInvoiceService {
 
     GstInvoice updateInvoice(Long id, GstInvoice updatedInvoice);
 
-    void deleteInvoice(Long id);
+    boolean deleteInvoice(Long id);
 }

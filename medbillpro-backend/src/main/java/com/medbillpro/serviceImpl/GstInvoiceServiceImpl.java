@@ -90,7 +90,15 @@ public class GstInvoiceServiceImpl implements GstInvoiceService {
 
 
     @Override
-    public void deleteInvoice(Long id) {
-        invoiceRepository.deleteById(id);
+    public boolean deleteInvoice(Long id) {
+        Optional<GstInvoice> optionalInvoice = invoiceRepository.findById(id);
+
+        if (optionalInvoice.isPresent()) {
+            invoiceRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
+
 }
