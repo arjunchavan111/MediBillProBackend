@@ -1,4 +1,3 @@
-// InvoiceItem.java
 package com.medbillpro.entity;
 
 import jakarta.persistence.*;
@@ -36,4 +35,10 @@ public class InvoiceItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
     private GstInvoice invoice;
+/*    // InvoiceItem.java
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
+    private ProductDetails productDetails;*/
+
+
 }
