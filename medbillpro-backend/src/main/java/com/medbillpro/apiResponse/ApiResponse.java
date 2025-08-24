@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class ApiResponse<T> {
     private boolean success;   // true if request was successful
     private String message;    // descriptive message
+    private String errorMessage;
     private T data;            // generic payload
     private int status;     // optional status string
 }

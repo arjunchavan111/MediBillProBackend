@@ -4,7 +4,7 @@ spring:
   name: Medical_Bill_Pro
   datasource:
     url: jdbc:mysql://localhost:3306/Medical_Bill_Pro
-    username: root
+    username: admin
     password: test123
     driver-class-name: com.mysql.cj.jdbc.Driver
 
