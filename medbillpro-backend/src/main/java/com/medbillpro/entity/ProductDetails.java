@@ -14,8 +14,7 @@ import java.time.LocalDate;
 @Table(name = "Product_Details")
 public class ProductDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    private String productId="PRODUCTID-"+Math.random();
 
     private String hsnCode;
     private String productName;

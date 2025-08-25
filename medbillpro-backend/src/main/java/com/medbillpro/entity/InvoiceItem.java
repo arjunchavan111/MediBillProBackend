@@ -13,10 +13,9 @@ import java.time.LocalDate;
 @Table(name = "invoice_item")
 public class InvoiceItem {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+	@Id
+	private String id = "INV-" + Math.random();
+	
     private String hsnCode;
     private String productName;
     private String manufacturer;
