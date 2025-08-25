@@ -29,6 +29,7 @@ public class GstInvoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long invoiceid;
 
+    //Selle_Details
     private String sellerName;
     private String sellerAddress;
     private String sellerPhone;
@@ -47,7 +48,7 @@ public class GstInvoice {
     private String purchaseOrderNumber;
     private String salesman;
 
-    // Buyer Info
+    // Buyer_Details
     private String buyerName;
     private String buyerAddress;
     private String buyerPhone;

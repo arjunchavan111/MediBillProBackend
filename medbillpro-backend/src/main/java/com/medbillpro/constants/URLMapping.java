@@ -7,9 +7,9 @@ public class URLMapping {
     public static final String ADMIN_DETAILS = "/adminDetails";
     public static final String GET_ADMIN_DETAILS = "/getadmindetails";
 
-    public static final String PURCHASE_API_BASE = "/api/purchases";
-    public static final String GET_PURCHASE_DETAILS = "/getPurchaseDetails";
-    public static final String ADD_PURCHASE_DETAILS = "/addPurchaseDetails";
-   // public static final String UPDATE_PURCHASE_DETAILS = "/updatePurchaseDetails";
-    public static final String DELETE_PURCHASE_DETAILS = "/deleteOrder";
+    public static final String CREATE_INVOICE ="/save-Invoice";
+    public static final String GET_INVOICE_BY_ID="/getInvoiceBy/{id}";
+    public static final String GET_ALL_INVOICE = "/getAll-Invoice";
+    public static final String UPDATE_INVOICE = "/update/{id}";
+    public static final String DELETE_INVOICE= "/delete/{id}";
 }
