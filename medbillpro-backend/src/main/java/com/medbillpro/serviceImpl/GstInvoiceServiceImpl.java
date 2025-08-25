@@ -2,10 +2,14 @@ package com.medbillpro.serviceImpl;
 
 import com.medbillpro.apiResponse.ApiResponse;
 
+import com.medbillpro.entity.BuyerDetails;
 import com.medbillpro.entity.GstInvoice;
 import com.medbillpro.entity.ProductDetails;
+import com.medbillpro.entity.SellerDetails;
+import com.medbillpro.repository.BuyerDetailsRepository;
 import com.medbillpro.repository.GstInvoiceRepository;
 import com.medbillpro.repository.ProductDetailsRepository;
+import com.medbillpro.repository.SellerDetailsRepository;
 import com.medbillpro.service.GstInvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,12 @@ public class GstInvoiceServiceImpl implements GstInvoiceService {
     GstInvoiceRepository invoiceRepository;
     @Autowired
     ProductDetailsRepository productDetailsRepository;
+
+    @Autowired
+    SellerDetailsRepository sellerDetailsRepository;
+
+    @Autowired
+    BuyerDetailsRepository buyerDetailsRepository;
 
     @Override
     public GstInvoice getInvoiceById(Long id) {
@@ -54,15 +64,12 @@ public class GstInvoiceServiceImpl implements GstInvoiceService {
 
         if (gstRequest.getItems() != null) {
             gstRequest.getItems().forEach(item -> {
-                // set back-reference
                 item.setInvoice(gstRequest);
 
-                // check if product already exists in ProductDetails by productName
                 String productName = item.getProductName();
                 ProductDetails existing = productDetailsRepository.findByProductName(productName);
 
                 if (existing == null) {
-                    // 🔥 create new ProductDetails from InvoiceItem
                     ProductDetails newProduct = new ProductDetails();
                     newProduct.setProductName(item.getProductName());
                     newProduct.setHsnCode(item.getHsnCode());
@@ -84,7 +91,36 @@ public class GstInvoiceServiceImpl implements GstInvoiceService {
                 }
             });
         }
+        SellerDetails sellerExisting = sellerDetailsRepository.findBySellerName(gstRequest.getSellerName());
+        System.out.println("sellerExisting "+sellerExisting);
 
+        if (sellerExisting == null) {
+            SellerDetails saveSellerDetails = new SellerDetails();
+            saveSellerDetails.setSellerName(gstRequest.getSellerName());
+            saveSellerDetails.setSellerAddress(gstRequest.getSellerAddress());
+            saveSellerDetails.setSellerPhone(gstRequest.getSellerPhone());
+            saveSellerDetails.setSellerStateCode(gstRequest.getSellerStateCode());
+            saveSellerDetails.setSellerGstin(gstRequest.getSellerGstin());
+            saveSellerDetails.setSellerPan(gstRequest.getSellerPan());
+            saveSellerDetails.setSellerDlNo1(gstRequest.getSellerDlNo1());
+            saveSellerDetails.setSellerDlNo2(gstRequest.getSellerDlNo2());
+            saveSellerDetails.setSellerFoodLic(gstRequest.getSellerFoodLic());
+            sellerDetailsRepository.save(saveSellerDetails);
+        }
+        BuyerDetails buyerExisting = buyerDetailsRepository.findByBuyerName(gstRequest.getBuyerName());
+        System.out.println("buyerExisting "+buyerExisting);
+        if (sellerExisting == null) {
+            BuyerDetails saveBuyerDetails = new BuyerDetails();
+            saveBuyerDetails.setBuyerName(gstRequest.getBuyerName());
+            saveBuyerDetails.setBuyerAddress(gstRequest.getBuyerAddress());
+            saveBuyerDetails.setBuyerPhone(gstRequest.getBuyerPhone());
+            saveBuyerDetails.setBuyerStateCode(gstRequest.getBuyerStateCode());
+            saveBuyerDetails.setBuyerGstin(gstRequest.getBuyerGstin());
+            saveBuyerDetails.setBuyerPan(gstRequest.getBuyerPan());
+            saveBuyerDetails.setBuyerDlNo1(gstRequest.getBuyerDlNo1());
+            saveBuyerDetails.setBuyerDlNo2(gstRequest.getBuyerDlNo2());
+            buyerDetailsRepository.save(saveBuyerDetails);
+        }
         return invoiceRepository.save(gstRequest);
     }
 

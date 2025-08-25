@@ -1,6 +1,7 @@
 package com.medbillpro.controller;
 
 import com.medbillpro.apiResponse.ApiResponse;
+import com.medbillpro.constants.URLMapping;
 import com.medbillpro.entity.GstInvoice;
 import com.medbillpro.repository.GstInvoiceRepository;
 import com.medbillpro.service.GstInvoiceService;
@@ -21,7 +22,7 @@ public class GstInvoiceController {
     GstInvoiceService gstInvoiceService;
 
 
-    @PostMapping("/create")
+    @PostMapping(URLMapping.CREATE_INVOICE)
     public ResponseEntity<ApiResponse> createInvoice(@RequestBody GstInvoice gstRequest) {
         ApiResponse apiResponse = new ApiResponse();
 
@@ -31,7 +32,7 @@ public class GstInvoiceController {
             if (response != null) {
                 apiResponse.setMessage("Invoice saved successfully");
                 apiResponse.setStatus(1);
-                apiResponse.setData(response);
+                apiResponse.setSuccess(true);
                 return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
             } else {
                 apiResponse.setErrorMessage("Invoice not saved");
@@ -48,7 +49,7 @@ public class GstInvoiceController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(URLMapping.GET_INVOICE_BY_ID)
     public ResponseEntity<ApiResponse> getInvoiceById(@PathVariable Long id) {
         ApiResponse apiResponse = new ApiResponse();
         try {
@@ -57,6 +58,7 @@ public class GstInvoiceController {
             if (invoice != null) {
                 apiResponse.setMessage("Invoice fetched successfully");
                 apiResponse.setStatus(1);
+                apiResponse.setSuccess(true);
                 apiResponse.setData(invoice);
                 return ResponseEntity.ok(apiResponse);
             } else {
@@ -74,7 +76,7 @@ public class GstInvoiceController {
     }
 
 
-    @GetMapping("/all")
+    @GetMapping(URLMapping.GET_ALL_INVOICE)
     public ResponseEntity<ApiResponse> getAllInvoices() {
         ApiResponse apiResponse = new ApiResponse();
         try {
@@ -83,6 +85,7 @@ public class GstInvoiceController {
             if (invoices != null && !invoices.isEmpty()) {
                 apiResponse.setMessage("Invoices fetched successfully");
                 apiResponse.setStatus(1);
+                apiResponse.setSuccess(true);
                 apiResponse.setData(invoices);
                 return ResponseEntity.ok(apiResponse);
             } else {
@@ -100,7 +103,7 @@ public class GstInvoiceController {
     }
 
 
-    @PutMapping("/update/{id}")
+    @PutMapping(URLMapping.UPDATE_INVOICE)
     public ResponseEntity<ApiResponse> updateInvoice(@PathVariable Long id, @RequestBody GstInvoice updateReq) {
         ApiResponse apiResponse = new ApiResponse();
 
@@ -110,6 +113,7 @@ public class GstInvoiceController {
             if (updated != null) {
                 apiResponse.setMessage("Invoice updated successfully");
                 apiResponse.setStatus(1);
+                apiResponse.setSuccess(true);
                 apiResponse.setData(updated);
                 return ResponseEntity.ok(apiResponse);
             } else {
@@ -127,7 +131,7 @@ public class GstInvoiceController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping(URLMapping.DELETE_INVOICE)
     public ResponseEntity<ApiResponse> deleteInvoice(@PathVariable Long id) {
         ApiResponse apiResponse = new ApiResponse();
 
@@ -137,6 +141,7 @@ public class GstInvoiceController {
             if (deleted) {
                 apiResponse.setMessage("Invoice deleted successfully");
                 apiResponse.setStatus(1);
+                apiResponse.setSuccess(true);
                 apiResponse.setData(null);
                 return ResponseEntity.ok(apiResponse);
             } else {
