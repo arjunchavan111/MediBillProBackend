@@ -50,7 +50,7 @@ public class GstInvoiceController {
     }
 
     @GetMapping(URLMapping.GET_INVOICE_BY_ID)
-    public ResponseEntity<ApiResponse> getInvoiceById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> getInvoiceById(@PathVariable String id) {
         ApiResponse apiResponse = new ApiResponse();
         try {
             GstInvoice invoice = gstInvoiceService.getInvoiceById(id);
@@ -104,7 +104,7 @@ public class GstInvoiceController {
 
 
     @PutMapping(URLMapping.UPDATE_INVOICE)
-    public ResponseEntity<ApiResponse> updateInvoice(@PathVariable Long id, @RequestBody GstInvoice updateReq) {
+    public ResponseEntity<ApiResponse> updateInvoice(@PathVariable String id, @RequestBody GstInvoice updateReq) {
         ApiResponse apiResponse = new ApiResponse();
 
         try {
@@ -132,7 +132,7 @@ public class GstInvoiceController {
     }
 
     @DeleteMapping(URLMapping.DELETE_INVOICE)
-    public ResponseEntity<ApiResponse> deleteInvoice(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> deleteInvoice(@PathVariable String id) {
         ApiResponse apiResponse = new ApiResponse();
 
         try {

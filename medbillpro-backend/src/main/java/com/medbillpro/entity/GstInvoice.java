@@ -25,9 +25,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class GstInvoice {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long invoiceid;
+	@Id
+	private String invoiceid ="GSTINVOICE"+ java.util.UUID.randomUUID().toString().substring(0, 8);
+	 
 
     //Selle_Details
     private String sellerName;

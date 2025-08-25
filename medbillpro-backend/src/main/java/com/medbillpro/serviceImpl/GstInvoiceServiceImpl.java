@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,14 +35,9 @@ public class GstInvoiceServiceImpl implements GstInvoiceService {
     BuyerDetailsRepository buyerDetailsRepository;
 
     @Override
-    public GstInvoice getInvoiceById(Long id) {
-        return invoiceRepository.findById(id).orElse(null);
-    }
-
-/*    @Override
-    public GstInvoice saveInvoice(GstInvoice gstRequest) {
-        return invoiceRepository.save(gstRequest);
-    }*/
+    	public GstInvoice getInvoiceById(String id) {
+    		return invoiceRepository.findById(id).orElse(null);
+    	}
 
     @Override
     public List<GstInvoice> getAllInvoices() {
@@ -49,17 +45,36 @@ public class GstInvoiceServiceImpl implements GstInvoiceService {
     }
 
     @Override
-    public GstInvoice updateInvoice(Long id, GstInvoice updatedInvoice) {
-        Optional<GstInvoice> existingOpt = invoiceRepository.findById(id);
-        if (existingOpt.isPresent()) {
-            updatedInvoice.setInvoiceid(existingOpt.get().getInvoiceid());
-            if (updatedInvoice.getItems() != null) {
-                updatedInvoice.getItems().forEach(item -> item.setInvoice(updatedInvoice));
-            }
-            return invoiceRepository.save(updatedInvoice);
-        }
-        return null;
+    public GstInvoice updateInvoice(String id, GstInvoice updatedInvoice) {
+    	Optional<GstInvoice> existingOpt = invoiceRepository.findById(id);
+    	if (existingOpt.isPresent()) {
+    		updatedInvoice.setInvoiceid(existingOpt.get().getInvoiceid());
+    		if (updatedInvoice.getItems() != null) {
+    			updatedInvoice.getItems().forEach(item -> item.setInvoice(updatedInvoice));
+    		}
+    		return invoiceRepository.save(updatedInvoice);
+    	}
+    	return null;
     }
+    
+	@Override
+	public List<GstInvoice> getInvoicesByDate(LocalDate date) {
+		return invoiceRepository.findByInvoiceDate(date);
+	}
+	
+	@Override
+	public boolean deleteInvoice(String id) {
+		Optional<GstInvoice> optionalInvoice = invoiceRepository.findById(id);
+
+		if (optionalInvoice.isPresent()) {
+			invoiceRepository.deleteById(id);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+    
     public GstInvoice saveInvoice(GstInvoice gstRequest) {
 
         if (gstRequest.getItems() != null) {
@@ -123,18 +138,6 @@ public class GstInvoiceServiceImpl implements GstInvoiceService {
         }
         return invoiceRepository.save(gstRequest);
     }
-
-
-    @Override
-    public boolean deleteInvoice(Long id) {
-        Optional<GstInvoice> optionalInvoice = invoiceRepository.findById(id);
-
-        if (optionalInvoice.isPresent()) {
-            invoiceRepository.deleteById(id);
-            return true;
-        } else {
-            return false;
-        }
-    }
+   
 
 }
