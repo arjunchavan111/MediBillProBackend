@@ -4,7 +4,7 @@ import com.medbillpro.entity.ProductDetails;
 import com.medbillpro.entity.SellerDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SellerDetailsRepository extends JpaRepository<SellerDetails, String> {
+public interface SellerDetailsRepository extends JpaRepository<SellerDetails, Long> {
 
     SellerDetails findBySellerName(String sellerName);
 
