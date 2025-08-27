@@ -28,7 +28,7 @@ public class URLMapping {
     public static final String DELETE_PRODUCT="/delete-ProductDetail";
     public static final String UPDATE_PRODUCT="/update-ProductDetail/{id}";
     
-    public static final String BUYER_API_BASE ="/api/buyers";
+    public static final String BUYER_API_BASE ="/api/buyers/";
     public static final String CREATE_BUYERDETAILS ="/save-new-BuyerDetails";
     public static final String GET_BUYERDETAILS_BY_ID="/getBuyerDetail/{id}";
     public static final String GET_ALL_BUYERDETAILS="/getBuyerDetails";
