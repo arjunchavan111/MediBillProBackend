@@ -44,10 +44,12 @@ public class BuyerDetailsServiceImpl implements BuyerDetailsService {
 	public boolean deleteBuyerDetails(Long id) {
 		// TODO Auto-generated method stub
 		Optional<BuyerDetails> buyerid = buyerDetailsRepository.findById(id);
-		if (buyerid != null) {
+		if (!buyerid.isEmpty()) {
 			buyerDetailsRepository.deleteById(id);
+			System.out.println(buyerid);
 			return true;
 		} else
+			System.out.println("false");
 			return false;
 	}
 
