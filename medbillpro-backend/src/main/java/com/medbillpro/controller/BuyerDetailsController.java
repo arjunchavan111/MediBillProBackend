@@ -4,15 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.medbillpro.apiResponse.ApiResponse;
 import com.medbillpro.constants.URLMapping;
 import com.medbillpro.entity.BuyerDetails;
 import com.medbillpro.service.BuyerDetailsService;
@@ -21,41 +15,101 @@ import com.medbillpro.service.BuyerDetailsService;
 @RequestMapping(URLMapping.BUYER_API_BASE)
 public class BuyerDetailsController {
 
-	@Autowired
-	private BuyerDetailsService buyerDetailsService;
+    @Autowired
+    private BuyerDetailsService buyerDetailsService;
 
-	@PostMapping(URLMapping.CREATE_BUYERDETAILS)
-	public BuyerDetails saveBuyerDetails(@RequestBody BuyerDetails sellerDetails) {
+    @PostMapping(URLMapping.CREATE_BUYERDETAILS)
+    public ApiResponse saveBuyerDetails(@RequestBody BuyerDetails buyerDetails) {
+        ApiResponse apiResponse = new ApiResponse();
+        try {
+            BuyerDetails res = buyerDetailsService.saveBuyerDetails(buyerDetails);
+            if (res != null) {
+                apiResponse.setStatus(1);
+                apiResponse.setMessage("Buyer saved successfully.");
+                apiResponse.setData(res);
+            } else {
+                apiResponse.setStatus(0);
+                apiResponse.setErrorMessage("Failed to save buyer.");
+            }
+        } catch (Exception e) {
+            apiResponse.setStatus(0);
+            apiResponse.setErrorMessage("Exception occurred: " + e.getMessage());
+        }
+        return apiResponse;
+    }
 
-		return buyerDetailsService.saveBuyerDetails(sellerDetails);
-	}
+    @GetMapping(URLMapping.GET_ALL_BUYERDETAILS)
+    public ApiResponse getAllBuyerDetails() {
+        ApiResponse apiResponse = new ApiResponse();
+        try {
+            List<BuyerDetails> buyers = buyerDetailsService.getAllBuyerDetails();
+            apiResponse.setStatus(1);
+            apiResponse.setMessage("Buyers fetched successfully.");
+            apiResponse.setData(buyers);
+            
+        } catch (Exception e) {
+            apiResponse.setStatus(0);
+            apiResponse.setErrorMessage("Exception occurred: " + e.getMessage());
+        }
+        return apiResponse;
+    }
 
-	@GetMapping(URLMapping.GET_ALL_BUYERDETAILS)
-	public List<BuyerDetails> getAllBuyerDetails() {
-		// TODO Auto-generated method stub
-		
-		return buyerDetailsService.getAllBuyerDetails() ;
-	}
+    @PutMapping(URLMapping.UPDATE_BUYERDETAILS )
+    public ApiResponse updateBuyerDetails(@PathVariable Long id, @RequestBody BuyerDetails updatedBuyerDetails) {
+        ApiResponse apiResponse = new ApiResponse();
+        try {
+            BuyerDetails updated = buyerDetailsService.updateBuyerDetails(id, updatedBuyerDetails);
+            if (updated != null) {
+                apiResponse.setStatus(1);
+                apiResponse.setMessage("Buyer updated successfully.");
+                apiResponse.setData(updated);
+            } else {
+                apiResponse.setStatus(0);
+                apiResponse.setErrorMessage("Buyer not found or update failed.");
+            }
+        } catch (Exception e) {
+            apiResponse.setStatus(0);
+            apiResponse.setErrorMessage("Exception occurred: " + e.getMessage());
+        }
+        return apiResponse;
+    }
 
-	@PutMapping(URLMapping.UPDATE_BUYERDETAILS)
-	public BuyerDetails updateBuyerDetails(@PathVariable Long id,@RequestBody BuyerDetails updatedSellerDetails) {
-		
-		return  buyerDetailsService.updateBuyerDetails(id, updatedSellerDetails);
-	}
+    @DeleteMapping(URLMapping.DELETE_BUYERDETAILS )
+    public ApiResponse deleteBuyerDetails(@PathVariable Long id) {
+        ApiResponse apiResponse = new ApiResponse();
+        try {
+            boolean deleted = buyerDetailsService.deleteBuyerDetails(id);
+            if (deleted) {
+                apiResponse.setStatus(1);
+                apiResponse.setMessage("Buyer deleted successfully.");
+            } else {
+                apiResponse.setStatus(0);
+                apiResponse.setErrorMessage("Buyer not found.");
+            }
+        } catch (Exception e) {
+            apiResponse.setStatus(0);
+            apiResponse.setErrorMessage("Exception occurred: " + e.getMessage());
+        }
+        return apiResponse;
+    }
 
-	@DeleteMapping(URLMapping.DELETE_BUYERDETAILS)
-	public String deleteBuyerDetails(@PathVariable Long id) {
-		boolean buyer= buyerDetailsService.deleteBuyerDetails(id);
-		if(buyer)
-		return "buyer is deleted scussefully.." ;
-		else
-			return "buyer is not exest..";
-	}
-
-	@GetMapping(URLMapping.GET_BUYERDETAILS_BY_ID)
-	public Optional<BuyerDetails> getBuyerDetailsById(@PathVariable Long id) {
-		// TODO Auto-generated method stub
-		return buyerDetailsService.getBuyerDetailsById(id);
-	}
-
+    @GetMapping(URLMapping.GET_BUYERDETAILS_BY_ID)
+    public ApiResponse getBuyerDetailsById(@PathVariable Long id) {
+        ApiResponse apiResponse = new ApiResponse();
+        try {
+            Optional<BuyerDetails> buyer = buyerDetailsService.getBuyerDetailsById(id);
+            if (buyer.isPresent()) {
+                apiResponse.setStatus(1);
+                apiResponse.setMessage("Buyer fetched successfully.");
+                apiResponse.setData(buyer.get());
+            } else {
+                apiResponse.setStatus(0);
+                apiResponse.setErrorMessage("Buyer not found.");
+            }
+        } catch (Exception e) {
+            apiResponse.setStatus(0);
+            apiResponse.setErrorMessage("Exception occurred: " + e.getMessage());
+        }
+        return apiResponse;
+    }
 }
