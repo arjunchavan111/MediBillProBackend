@@ -8,5 +8,6 @@ public interface BuyerDetailsRepository extends JpaRepository<BuyerDetails, Long
 
     BuyerDetails findByBuyerName(String buyerName);
 
+    
 }
 
