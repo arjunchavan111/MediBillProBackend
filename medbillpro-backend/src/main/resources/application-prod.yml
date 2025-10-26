@@ -3,10 +3,9 @@
 spring:
   name: Medical_Bill_Pro
   datasource:
-    url: mysql://${{MYSQLUSER}}:${{MYSQL_ROOT_PASSWORD}}@${{RAILWAY_PRIVATE_DOMAIN}}:3306/${{MYSQL_DATABASE}}
-    MYSQLUSER: root
-    MYSQL_ROOT_PASSWORD: ErqKLVvbWfWgZqZeBwtEWzAWLvpAEHXu
-    MYSQL_DATABASE : railway
+    url: jdbc:mysql://root:jOmIUeErMpecSdDwcpHooDYVuPTRqbMU@turntable.proxy.rlwy.net:30794/railway
+    username: root
+    password: jOmIUeErMpecSdDwcpHooDYVuPTRqbMU
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -25,7 +24,7 @@ app:
 server:
   port: 8082
   servlet:
-  # context-path: /api
+   # context-path: /api
 
 medbillpro:
   app:
