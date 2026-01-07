@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class MedBillProBackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MedBillProBackendApplication.class, args);
+
+        SpringApplication.run(MedBillProBackendApplication.class, args);
 	}
 
 }

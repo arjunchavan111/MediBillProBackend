@@ -9,6 +9,7 @@ public class URLMapping {
 
     public static final String CREATE_INVOICE ="/save-Invoice";
     public static final String GET_INVOICE_BY_ID="/getInvoiceBy/{id}";
+    public static final String GENRATE_INVICE="/genrateInvoice";
     public static final String GET_ALL_INVOICE = "/getAll-Invoice";
     public static final String UPDATE_INVOICE = "/update/{id}";
     public static final String DELETE_INVOICE= "/delete/{id}";

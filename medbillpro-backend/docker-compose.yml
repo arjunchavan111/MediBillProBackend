@@ -1,0 +1,39 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: Medical_Bill_Pro
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: test123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: medbillpro-app
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/Medical_Bill_Pro
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: test123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+      # ✅ Correct way to set server context path
+      SERVER_PORT: 8081
+      SERVER_SERVLET_CONTEXT_PATH: /api
+
+      # (Optional) if you want to use prod profile explicitly
+      SPRING_PROFILES_ACTIVE: prod
+
+    ports:
+      - "8082:8081"
+    restart: always
+
+volumes:
+  mysql_data:
